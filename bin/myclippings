@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'myclippings'
+require 'pathname'
+require 'pry'
+
+module Myclippings
+  class CLI
+    attr_reader :clippings_path
+
+    def initialize
+      @clippings_path = ARGV.first
+    end
+
+    def run
+      path = Pathname.new(@clippings_path).expand_path
+      myclippings = Parser.new(path).parse
+      FileGenerator.new(myclippings).run
+    end
+  end
+end
+
+Myclippings::CLI.new.run
